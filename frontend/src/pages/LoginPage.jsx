@@ -66,6 +66,10 @@ export default function LoginPage() {
       toast.success('Connexion réussie !');
       if (utilisateur?.role === 'Admin') {
         navigate(moduleScope ? '/' : '/modules');
+      } else if (utilisateur?.role === 'Technicien') {
+        navigate('/maintenancier');
+      } else if (utilisateur?.role === 'Operateur') {
+        navigate('/operateur');
       } else {
         navigate('/');
       }

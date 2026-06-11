@@ -83,6 +83,7 @@ export const planningAPI = {
   // ── INTERVENTIONS ────────────────────────────────────
   creerOuModifierIntervention:     d  => api.post('/planning/intervention/creer-ou-modifier', d),
   mettreAJourInterventionLigne:    d  => api.put('/planning/intervention-ligne', d),
+  mettreAJourLigneQuart:           d  => api.put('/planning/ligne-quart', d),
   supprimerPlanningQuart:          id => api.delete(`/planning/quart/${id}`),
   supprimerIntervention:           id => api.delete(`/planning/intervention/${id}`),
 
@@ -112,6 +113,21 @@ export const utilisateursAPI = {
   creer:       d  => api.post('/utilisateurs', d),
   toggleActif: id => api.patch(`/utilisateurs/${id}/actif`),
   modifierRole:(id,d)=> api.patch(`/utilisateurs/${id}/role`, d),
+};
+
+export const lignesAPI = {
+  lister:   () => api.get('/lignes'),
+  creer:    d  => api.post('/lignes', d),
+  modifier: (id,d)=> api.put(`/lignes/${id}`, d),
+  supprimer: id => api.delete(`/lignes/${id}`),
+};
+
+export const champsAPI = {
+  lister:   formulaireId => api.get(`/champs/formulaire/${formulaireId}`),
+  creer:    (formulaireId, d) => api.post(`/champs/formulaire/${formulaireId}`, d),
+  modifier: (formulaireId, champId, d) => api.put(`/champs/formulaire/${formulaireId}/${champId}`, d),
+  supprimer: (formulaireId, champId) => api.delete(`/champs/formulaire/${formulaireId}/${champId}`),
+  types:    () => api.get('/champs/types'),
 };
 
 export const dashboardAPI = {

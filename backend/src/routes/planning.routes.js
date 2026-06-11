@@ -15,6 +15,7 @@ r.post('/quart/assigner',                auth, peutGerer, c.assignerMaintenancie
 // ── INTERVENTIONS MAINTENANCE ────────────────────────
 r.post('/intervention/creer-ou-modifier', auth, c.creerOuModifierIntervention);
 r.put('/intervention-ligne',            auth, peutGerer, c.mettreAJourInterventionLigne);
+r.put('/ligne-quart',                  auth, peutGerer, c.mettreAJourLigneQuart);
 r.delete('/quart/:planningQuartId',     auth, peutGerer, c.supprimerPlanningQuart);
 r.delete('/intervention/:interventionId', auth, peutGerer, c.supprimerIntervention);
 

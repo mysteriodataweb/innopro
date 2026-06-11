@@ -15,6 +15,10 @@ import AlertesPage from './pages/AlertesPage';
 import PlanningPage from './pages/PlanningPage';
 import StockPage from './pages/StockPage';
 import UtilisateursPage from './pages/UtilisateursPage';
+import LignesPage from './pages/LignesPage';
+import ChampsPage from './pages/ChampsPage';
+import MaintenancierPage from './pages/MaintenancierPage';
+import OperateurPage from './pages/OperateurPage';
 
 function Guard({ children }) {
   const { user, loading } = useAuth();
@@ -43,6 +47,12 @@ function ModuleGuard({ allowed, children }) {
   return children;
 }
 
+function RoleGuard({ allowed, children }) {
+  const { user } = useAuth();
+  if (!user || !allowed.includes(user.role)) return <Navigate to="/" replace/>;
+  return children;
+}
+
 export default function App() {
   const { user, isAdmin, moduleScope } = useAuth();
   return (
@@ -51,6 +61,8 @@ export default function App() {
       <Route path="/modules" element={<Guard><AdminModuleHomePage/></Guard>}/>
       <Route path="/" element={<Guard><ModuleScopeGate><Layout/></ModuleScopeGate></Guard>}>
         <Route index element={isAdmin() && !moduleScope ? <Navigate to="/modules" replace/> : <DashboardPage/>}/>
+        <Route path="maintenancier" element={<RoleGuard allowed={['Technicien']}><MaintenancierPage/></RoleGuard>}/>
+        <Route path="operateur" element={<RoleGuard allowed={['Operateur']}><OperateurPage/></RoleGuard>}/>
         <Route path="formulaires" element={<ModuleGuard allowed={['MAINTENANCE','PRODUCTION']}><FormulaireListPage/></ModuleGuard>}/>
         <Route path="formulaires/:id/remplir" element={<ModuleGuard allowed={['MAINTENANCE','PRODUCTION']}><FormulaireRemplirPage/></ModuleGuard>}/>
         <Route path="generateur-excel" element={<ExcelFormGeneratorPage/>}/>
@@ -63,6 +75,8 @@ export default function App() {
         <Route path="planning" element={<ModuleGuard allowed={['MAINTENANCE']}><PlanningPage/></ModuleGuard>}/>
         <Route path="stock" element={<ModuleGuard allowed={['MAINTENANCE']}><StockPage/></ModuleGuard>}/>
         <Route path="utilisateurs" element={<UtilisateursPage/>}/>
+        <Route path="lignes" element={<ModuleGuard allowed={['MAINTENANCE']}><LignesPage/></ModuleGuard>}/>
+        <Route path="champs" element={<ModuleGuard allowed={['MAINTENANCE']}><ChampsPage/></ModuleGuard>}/>
       </Route>
       <Route path="*" element={<Navigate to="/" replace/>}/>
     </Routes>

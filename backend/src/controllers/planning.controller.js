@@ -1128,6 +1128,45 @@ exports.supprimerPlanningQuart = async (req, res) => {
   }
 };
 
+/**
+ * Mettre à jour la ligne de production pour un quart (admin)
+ */
+exports.mettreAJourLigneQuart = async (req, res) => {
+  try {
+    const { planning_quart_id, ligne_id } = req.body;
+    
+    if (!planning_quart_id || !ligne_id) {
+      return res.status(400).json({ error: 'planning_quart_id et ligne_id requis' });
+    }
+
+    // Récupérer la ligne_id actuelle du planning_semaine
+    const { rows: ctx } = await db.query(
+      `SELECT ps.ligne_id FROM planning_quart pq
+       JOIN planning_jour pj ON pq.planning_jour_id = pj.id
+       JOIN planning_semaine ps ON pj.planning_semaine_id = ps.id
+       WHERE pq.id = $1`,
+      [planning_quart_id]
+    );
+
+    if (!ctx.length) {
+      return res.status(404).json({ error: 'Quart introuvable' });
+    }
+
+    // Mettre à jour intervention_ligne si elle existe
+    await db.query(
+      `UPDATE intervention_ligne 
+       SET ligne_id = $1 
+       WHERE planning_quart_id = $2`,
+      [ligne_id, planning_quart_id]
+    );
+
+    res.json({ success: true, message: 'Ligne mise à jour' });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+};
+
 // ========================================
 // UTILITAIRES
 // ========================================

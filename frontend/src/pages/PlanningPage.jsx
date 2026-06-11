@@ -153,6 +153,19 @@ function PlanningAdmin() {
     }
   };
 
+  const updateLigneForQuart = async (planningQuartId, ligneId) => {
+    try {
+      await planningAPI.mettreAJourLigneQuart({
+        planning_quart_id: planningQuartId,
+        ligne_id: ligneId,
+      });
+      toast.success('Ligne mise à jour');
+      loadPlanning();
+    } catch (e) {
+      toast.error(e.response?.data?.error || 'Erreur');
+    }
+  };
+
   const saveRowInline = async row => {
     if (!row.planning_quart_id) {
       return toast.error('Assignez d\'abord un maintenancier');
@@ -351,9 +364,30 @@ function PlanningAdmin() {
                         </td>
                         <td className="px-3 py-2.5 text-xs">{row.co_maintenancier_nom || '—'}</td>
                         <td className="px-3 py-2.5">
-                          <span className="rounded-md bg-secondary/15 px-2 py-0.5 text-xs font-bold text-secondary">
-                            {row.ligne_code}
-                          </span>
+                          <select
+                            className="input py-1 text-xs w-24"
+                            value={drafts[row.key]?.ligne_id || row.ligne_id || ''}
+                            onChange={e => {
+                              const selectedLigne = lignes.find(l => l.id === e.target.value);
+                              setDrafts(p => ({
+                                ...p,
+                                [row.key]: { 
+                                  ...p[row.key], 
+                                  ligne_id: e.target.value,
+                                  ligne_code: selectedLigne?.code || ''
+                                }
+                              }));
+                              // Mettre à jour la ligne dans le planning_quart si nécessaire
+                              if (row.planning_quart_id) {
+                                updateLigneForQuart(row.planning_quart_id, e.target.value);
+                              }
+                            }}
+                          >
+                            <option value="">—</option>
+                            {lignes.map(l => (
+                              <option key={l.id} value={l.id}>{l.code}</option>
+                            ))}
+                          </select>
                         </td>
                         <td className="px-3 py-2.5">
                           <input

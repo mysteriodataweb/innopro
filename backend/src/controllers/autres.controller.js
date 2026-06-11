@@ -116,6 +116,17 @@ exports.modifierEquipement = async (req, res) => {
   } catch (e) { res.status(500).json({ error: 'Erreur serveur' }); }
 };
 
+exports.supprimerEquipement = async (req, res) => {
+  try {
+    const { rows } = await db.query(
+      'DELETE FROM equipement WHERE id=$1 RETURNING id',
+      [req.params.id]
+    );
+    if (!rows.length) return res.status(404).json({ error: 'Équipement non trouvé' });
+    res.json({ success: true, message: 'Équipement supprimé' });
+  } catch (e) { res.status(500).json({ error: 'Erreur serveur' }); }
+};
+
 // ── ALERTES ───────────────────────────────────────────────────
 exports.listerAlertes = async (req, res) => {
   try {

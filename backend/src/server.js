@@ -24,6 +24,7 @@ app.use('/api/equipements',  require('./routes/equipement.routes'));
 app.use('/api/alertes',      require('./routes/alerte.routes'));
 app.use('/api/stock',        require('./routes/stock.routes'));
 app.use('/api/planning',     require('./routes/planning.routes'));
+app.use('/api/lignes',       require('./routes/ligne.routes'));
 app.use('/api/dashboard',    require('./routes/dashboard.routes'));
 
 app.get('/api/health', (_, res) => res.json({ ok: true, ts: new Date() }));
