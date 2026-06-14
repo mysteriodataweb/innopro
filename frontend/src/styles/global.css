@@ -118,3 +118,63 @@
   .modal-overlay { position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 50; display: flex; align-items: center; justify-content: center; padding: 1rem; }
   .modal { background-color: var(--card); color: var(--card-foreground); border-radius: var(--radius); box-shadow: var(--shadow-offset-x) var(--shadow-offset-y) var(--shadow-blur) var(--shadow-spread) var(--shadow-color); width: 100%; animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
 }
+
+/* ── Responsive helpers ─────────────────────────────────────── */
+@layer components {
+
+  /* Tables scrollables sur mobile */
+  .table-responsive {
+    @apply w-full overflow-x-auto -mx-3 px-3 md:mx-0 md:px-0;
+  }
+
+  /* Cards adaptées mobile */
+  .card {
+    @apply bg-card text-card-foreground rounded-xl border border-border p-4 md:p-6 shadow-sm;
+  }
+
+  /* Grilles responsive */
+  .grid-kpi {
+    @apply grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4;
+  }
+
+  /* Formulaires pleine largeur sur mobile */
+  .form-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 gap-4;
+  }
+
+  /* Input / select */
+  .input {
+    @apply w-full px-3 py-2.5 md:py-2 rounded-lg border border-border bg-input
+           text-sm text-foreground placeholder:text-muted-foreground
+           focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
+           transition-colors;
+  }
+
+  .label {
+    @apply block text-sm font-medium text-foreground mb-1;
+  }
+  .label-req::after {
+    content: ' *';
+    @apply text-red-500;
+  }
+
+  /* Boutons taille minimum tactile 44px */
+  .btn-primary, .btn-secondary, .btn-danger, .btn-ghost {
+    @apply min-h-[44px] md:min-h-[36px] touch-manipulation;
+  }
+
+  /* Badges */
+  .badge-blue   { @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700; }
+  .badge-green  { @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700; }
+  .badge-red    { @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700; }
+  .badge-gray   { @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600; }
+  .badge-orange { @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-700; }
+
+  /* Table helpers */
+  .th { @apply text-left px-3 md:px-4 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wide bg-muted/50 border-b border-border; }
+  .td { @apply px-3 md:px-4 py-3 border-b border-border/50 text-sm; }
+  .tr { @apply hover:bg-muted/30 transition-colors; }
+
+  /* Section title */
+  .section-title { @apply text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-3; }
+}
