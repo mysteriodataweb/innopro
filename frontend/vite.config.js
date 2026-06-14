@@ -9,7 +9,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'http://localhost:5000',
+        target:'https://crusher-ambition-drone.ngrok-free.dev',
         changeOrigin: true,
         rewrite: (p) => p.replace(/^\/api/, '/api/v1'),
       },
